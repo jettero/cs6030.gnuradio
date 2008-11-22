@@ -21,9 +21,9 @@ class app_top_block(stdgui2.std_top_block):
         parser = OptionParser(option_class=eng_option)
         parser.add_option("", "--fft-size",   type="int",       default=1024,  help="[default=%default]");
         parser.add_option("", "--fft-rate",   type="int",       default=30,    help="[default=%default]");
-        parser.add_option("", "--ref_scale",  type="eng_float", default=1.0,   help="[default=%default]");
-        parser.add_option("", "--ref_level",  type="int",       default=0,     help="[default=%default]");
-        parser.add_option("", "--y_divs",     type="int",       default=12,    help="[default=%default]");
+        parser.add_option("", "--ref-scale",  type="eng_float", default=1.0,   help="[default=%default]");
+        parser.add_option("", "--ref-level",  type="int",       default=0,     help="[default=%default]");
+        parser.add_option("", "--y-divs",     type="int",       default=12,    help="[default=%default]");
         parser.add_option("", "--avg-alpha",  type="eng_float", default=1e-1,  help="[default=%default]")
         parser.add_option("", "--input-file", type="string",    default=None,  help="[default=%default]")
 
