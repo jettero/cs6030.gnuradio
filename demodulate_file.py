@@ -32,8 +32,18 @@ class my_top_block(gr.top_block):
             self.connect( (self.src, 0), (self.iq_to_c, 0) )
             self.connect( (self.src, 1), (self.iq_to_c, 1) )
 
-        self.demodulator = blks2.gmsk_demod()
-        self.pkt_queue   = blks2.demod_pkts( demodulator=self.demodulator, callback=callback, threshold=options.threshold )
+        if options.modulator == 'gmsk':
+            if verbose: print "demodulating with GMSK"
+            self.demodulator = blks2.gmsk_demod()
+
+      # elif options.modulator == 'qam16':
+      #     if verbose: print "demodulating with QAM16"
+      #     self.demodulator = blks2.qam16_demod()
+
+        else:
+            raise SystemExit, "ERROR: modulation option '%s' invalid" % options.modulator
+
+        self.pkt_queue = blks2.demod_pkts( demodulator=self.demodulator, callback=callback, threshold=options.threshold )
 
         if options.carrier_frequency == 0:
             self.mixer = self.iq_to_c
@@ -52,6 +62,12 @@ class my_top_block(gr.top_block):
             self._dbase = debugwav("rx_baseband", options)
             self.connect(self.iq_to_c, self._dpass)
             self.connect(self.mixer,   self._dbase)
+
+        if options.debug_files:
+            self._dpassf = gr.file_sink(gr.sizeof_gr_complex*1, "debug_rx_passband.d_c")
+            self._dbasef = gr.file_sink(gr.sizeof_gr_complex*1, "debug_rx_baseband.d_c")
+            self.connect(self.iq_to_c, self._dpassf)
+            self.connect(self.mixer,   self._dbasef)
 
 def rx(ok, payload):
     global infile, lpktno, filesz, f, header_re, crrno, ofilesz, ctime
@@ -138,6 +154,9 @@ if __name__ == '__main__':
     parser.add_option("-w", "--wait", type="int", default=None, help="when on dsp, accept this many seconds worth of audio or give up and exit. [default=%default]")
 
     parser.add_option("", "--debug-wavs", action="store_true", default=False, help="dump received passband and converted baseband signals to wav files [default: False]")
+    parser.add_option("", "--debug-files", action="store_true", default=False, help="dump received passband and baseband signals to binary files [default: False]")
+
+    parser.add_option("-m", "--modulator", type="string", default='gmsk', help="modulator choices are currently limited to 'gmsk' or 'qam16' [default: %default]") 
 
     (options, args) = parser.parse_args()
 

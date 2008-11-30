@@ -1,7 +1,7 @@
 #!/bin/bash
 
 file=$1; shift
-[ -z "$file" ] && file=gmsk_to_file.py
+[ -z "$file" ] && file=modulate_file.py
 
 if [ ! -f "$file" ]; then
     echo file?
@@ -10,7 +10,7 @@ fi
 
 while [ true ]; do
     echo sending
-    ./file_to_gmsk.py $* --dsp $file
+    ./modulate_file.py $* --dsp $file
 
     echo sleeping for 5 seconds
     sleep 5

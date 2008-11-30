@@ -4,7 +4,7 @@ import os, wx
 
 from gnuradio import gr, audio
 from gnuradio.eng_option import eng_option
-from gnuradio.wxgui import stdgui2, fftsink2
+from gnuradio.wxgui import stdgui2, scopesink2
 from optparse import OptionParser
 
 import os
@@ -19,14 +19,8 @@ class app_top_block(stdgui2.std_top_block):
         self.panel = panel
         
         parser = OptionParser(option_class=eng_option)
-        parser.add_option("", "--fft-size",      type="int",       default=512,  help="[default=%default]");
-        parser.add_option("", "--fft-rate",      type="int",       default=30,    help="[default=%default]");
-        parser.add_option("", "--ref-scale",     type="eng_float", default=1.0,   help="[default=%default]");
-        parser.add_option("", "--ref-level",     type="int",       default=20,    help="[default=%default]");
-        parser.add_option("", "--y-divs",        type="int",       default=12,    help="[default=%default]");
-        parser.add_option("", "--y-per-div",     type="int",       default=10,    help="[default=%default]");
-        parser.add_option("", "--baseband-freq", type="eng_float", default=0,     help="[default=%default]")
-        parser.add_option("", "--input-file",    type="string",    default=None,  help="[default=%default]")
+        parser.add_option("", "--frame-decim",  type="int", default=15, help="[default=%default]");
+        parser.add_option("", "--input-file", type="string",    default=None,  help="[default=%default]")
 
         (options, args) = parser.parse_args()
 
@@ -42,13 +36,12 @@ class app_top_block(stdgui2.std_top_block):
             self.wav = audio.source(sample_rate, "", True)
 
       	self.f2c   = gr.float_to_complex()
-        self.scope = fftsink2.fft_sink_c(panel, fft_size=options.fft_size,
-                sample_rate=sample_rate, fft_rate=options.fft_rate, ref_scale=options.ref_scale,
-                ref_level=options.ref_level, y_divs=options.y_divs,
-                baseband_freq=options.baseband_freq, y_per_div=options.y_per_div)
-                # average=options.average, peak_hold=peak_hold)
-
-
+        self.scope = scopesink2.constellation_sink(
+			panel,
+			title="Constellation Plot",
+			sample_rate=sample_rate,
+			frame_decim=options.frame_decim,
+		)
 
       	self.connect((self.wav, 0), (self.f2c, 0))
       	self.connect((self.wav, 1), (self.f2c, 1))
