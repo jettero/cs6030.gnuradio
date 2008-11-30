@@ -1,0 +1,2 @@
+c=read_complex_binary("debug_tx_passband.d_c");
+plot3(c(100000:100250));
