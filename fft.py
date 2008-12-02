@@ -44,11 +44,8 @@ class app_top_block(stdgui2.std_top_block):
       	self.f2c   = gr.float_to_complex()
         self.scope = fftsink2.fft_sink_c(panel, fft_size=options.fft_size,
                 sample_rate=sample_rate, fft_rate=options.fft_rate, ref_scale=options.ref_scale,
-                ref_level=options.ref_level, y_divs=options.y_divs,
+                ref_level=options.ref_level, y_divs=options.y_divs, average=True,
                 baseband_freq=options.baseband_freq, y_per_div=options.y_per_div)
-                # average=options.average, peak_hold=peak_hold)
-
-
 
       	self.connect((self.wav, 0), (self.f2c, 0))
       	self.connect((self.wav, 1), (self.f2c, 1))
