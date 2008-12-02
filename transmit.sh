@@ -10,8 +10,10 @@ fi
 
 while [ true ]; do
     echo sending
-    ./modulate_file.py $* --dsp $file
 
-    echo sleeping for 5 seconds
-    sleep 5
+    # the softrock rxtx is 5k off from the lite, so -2999 is actually 7001
+    ./modulate_file.py -c -2999 --dsp $file
+
+    echo sleeping for 2 seconds
+    sleep 2
 done

@@ -28,7 +28,7 @@ class my_top_block(gr.top_block):
 
         if options.modulator == 'gmsk':
             if verbose: print "modulating with GMSK"
-            self.modulator = blks2.gmsk_mod()
+            self.modulator = blks2.gmsk_mod(samples_per_symbol=options.samples_per_symbol)
 
      #  elif options.modulator == 'qam16':
      #      if verbose: print "modulating with QAM16"
@@ -44,9 +44,10 @@ class my_top_block(gr.top_block):
         else:
             self.mixer   = gr.multiply_vcc(1)
             self.carrier = gr.sig_source_c( options.carrier_sample_rate, gr.GR_SIN_WAVE, options.carrier_frequency, 1.0 )
-            self.lowpass = gr.fir_filter_ccf(1, firdes.low_pass(1, 48000, 17500, 500, firdes.WIN_HAMMING, 6.76))
-            self.connect(self.pkt_queue, self.lowpass, (self.mixer, 0) )
-            self.connect(self.carrier, (self.mixer, 1) )
+          # self.lowpass = gr.fir_filter_ccf(1, firdes.low_pass(1, 48000, 17500, 500, firdes.WIN_HAMMING, 6.76))
+          # self.connect(self.pkt_queue, self.lowpass, (self.mixer, 0) )
+            self.connect(self.pkt_queue, (self.mixer, 0) )
+            self.connect(self.carrier,   (self.mixer, 1) )
 
         self.amp = gr.multiply_const_cc(1); self.amp.set_k(options.amp_amplitude)
         self.connect(self.mixer, self.amp, self.c_to_iq)
@@ -93,7 +94,7 @@ def main(inputfile, outputfile, options):
 
     carrier = make_packet("\xff" * (options.size - pkt_overhead), 0, options.size)
 
-    for i in range(10):
+    for i in range(3):
         tb.send_pkt(carrier)
 
     file_header = "filename=%s; size=%d;" % (os.path.basename(inputfile), os.path.getsize(inputfile))
@@ -121,7 +122,7 @@ def main(inputfile, outputfile, options):
 
         else: break
 
-    for i in range(10):
+    for i in range(3):
         tb.send_pkt(carrier)
 
     tb.eof()
@@ -138,7 +139,8 @@ if __name__ == '__main__':
     parser.add_option("-c", "--carrier-frequency",   type="int", default=7001, help="carrier wave frequency [default: %default Hz]") 
     parser.add_option("-a", "--amp-amplitude", type="float", default=0.1, help="amplitude on the amplifier [default=%default]")
     parser.add_option("-s", "--size", type="int", default=400, help="set packet size [default=%default Bytes]")
-    parser.add_option("-f", "--redundant-copies", type="int", default=4, help="number of copies of each data packet to send (-f 1 for no-copies, -f 0 prevents sending any data) [default=%default]")
+    parser.add_option("-f", "--redundant-copies", type="int", default=2, help="number of copies of each data packet to send (-f 1 for no-copies, -f 0 prevents sending any data) [default=%default]")
+    parser.add_option("-z", "--samples-per-symbol", type="int", default=4, help="samples per symbol [default=%default]")
 
     parser.add_option("-d", "--dsp", action="store_true", default=False, help="use soundcard instead of wav file [default: False]")
     parser.add_option("-r", "--dsp-sample-rate", type="int", default=48000, help="soundcard sample rate [default: %default Hz]") 

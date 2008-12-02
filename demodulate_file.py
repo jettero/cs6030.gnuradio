@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, struct, re, time
+import os, struct, re, time, os, signal
 
 from optparse import OptionParser
 from gnuradio import gr, blks2, audio
@@ -34,7 +34,7 @@ class my_top_block(gr.top_block):
 
         if options.modulator == 'gmsk':
             if verbose: print "demodulating with GMSK"
-            self.demodulator = blks2.gmsk_demod()
+            self.demodulator = blks2.gmsk_demod(samples_per_symbol=options.samples_per_symbol)
 
       # elif options.modulator == 'qam16':
       #     if verbose: print "demodulating with QAM16"
@@ -97,6 +97,13 @@ def rx(ok, payload):
                             dt  = (time.time() - ctime)
                             bps = ofilesz / dt
                             print "file.close(); %d/%f = %f bps" % (ofilesz, dt, bps)
+                        if options.exit_on_receive:
+                            if verbose: print "sys.exit() due to --exit-on-receive"
+                            os.kill(os.getpid(), signal.SIGINT)
+                            # sys.exit()
+                            # rant:
+                            # python *can't* exit with threads running.
+                            # no language handles threads well, why do people use them?
             else:
                 m = header_re.match(payload)
                 if m:
@@ -145,6 +152,7 @@ if __name__ == '__main__':
     parser.add_option("-w", "--wav-sample-rate", type="int", default=48000, help="wav-file sample rate [default: %default Hz]") 
     parser.add_option("",   "--carrier-sample-rate", type="int", default=48000, help="carrier sample rate [default: %default Hz]") 
     parser.add_option("-c", "--carrier-frequency",   type="int", default=7001, help="carrier wave frequency [default: %default Hz]") 
+    parser.add_option("-z", "--samples-per-symbol", type="int", default=4, help="samples per symbol [default=%default]")
     parser.add_option("-s", "--size", type="int", default=400, help="set packet size [default=%default Bytes]")
     parser.add_option("-a", "--amp-amplitude", type="float", default=1.0, help="amplitude on the amplifier [default=%default]")
     parser.add_option("-t", "--threshold", type="int", default=12, help="detect frame header with up to threshold bits wrong [default=%default]")
@@ -157,6 +165,7 @@ if __name__ == '__main__':
     parser.add_option("", "--debug-files", action="store_true", default=False, help="dump received passband and baseband signals to binary files [default: False]")
 
     parser.add_option("-m", "--modulator", type="string", default='gmsk', help="modulator choices are currently limited to 'gmsk' or 'qam16' [default: %default]") 
+    parser.add_option("-e", "--exit-on-receive", action="store_true", default=False, help="exit after receiving a file? [default: %default]")
 
     (options, args) = parser.parse_args()
 
