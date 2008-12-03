@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+git clean -dfx
+./bootstrap
+./configure --prefix=`pwd`/../test.howto/
+make
+
+echo "[35mabout to make check (hit enter to continue)[m"
+read X
+make check | hi PASS green FAIL red
+
+echo "[35mabout to make install (hit enter to continue)[m"
+read X
+make install

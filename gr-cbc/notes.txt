@@ -1,0 +1,51 @@
+config.status: executing run_tests commands
+cd . && /bin/bash /home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/missing --run autoheader
+touch ./config.h.in
+make  all-recursive
+make[1]: Entering directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3'
+Making all in config
+make[2]: Entering directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/config'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/config'
+Making all in src
+make[2]: Entering directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src'
+Making all in lib
+make[3]: Entering directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src/lib'
+/usr/bin/swig -c++ -fvirtual -python -modern -I/usr/local/include/gnuradio/swig -I/usr/local/include/gnuradio   -module howto -o howto.cc ../../src/lib/howto.i
+make  all-am
+make[4]: Entering directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src/lib'
+if /bin/bash ../../libtool --mode=compile g++ -DHAVE_CONFIG_H -I. -I. -I../..  -pthread -DOMNITHREAD_POSIX=1 -I/usr/local/include/boost-1_36 -I/usr/local/include/gnuradio -I/usr/local/include    -I/usr/include/python2.5    -g -O2 -Wall -Woverloaded-virtual -pthread -MT howto.lo -MD -MP -MF ".deps/howto.Tpo" \
+          -c -o howto.lo `test -f 'howto.cc' || echo './'`howto.cc; \
+        then mv -f ".deps/howto.Tpo" ".deps/howto.Plo"; \
+        else rm -f ".deps/howto.Tpo"; exit 1; \
+        fi
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I. -I../.. -pthread -DOMNITHREAD_POSIX=1 -I/usr/local/include/boost-1_36 -I/usr/local/include/gnuradio -I/usr/local/include -I/usr/include/python2.5 -g -O2 -Wall -Woverloaded-virtual -pthread -MT howto.lo -MD -MP -MF .deps/howto.Tpo -c howto.cc  -fPIC -DPIC -o .libs/howto.o
+if /bin/bash ../../libtool --mode=compile g++ -DHAVE_CONFIG_H -I. -I. -I../..  -pthread -DOMNITHREAD_POSIX=1 -I/usr/local/include/boost-1_36 -I/usr/local/include/gnuradio -I/usr/local/include    -I/usr/include/python2.5    -g -O2 -Wall -Woverloaded-virtual -pthread -MT howto_square_ff.lo -MD -MP -MF ".deps/howto_square_ff.Tpo" \
+          -c -o howto_square_ff.lo `test -f 'howto_square_ff.cc' || echo './'`howto_square_ff.cc; \
+        then mv -f ".deps/howto_square_ff.Tpo" ".deps/howto_square_ff.Plo"; \
+        else rm -f ".deps/howto_square_ff.Tpo"; exit 1; \
+        fi
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I. -I../.. -pthread -DOMNITHREAD_POSIX=1 -I/usr/local/include/boost-1_36 -I/usr/local/include/gnuradio -I/usr/local/include -I/usr/include/python2.5 -g -O2 -Wall -Woverloaded-virtual -pthread -MT howto_square_ff.lo -MD -MP -MF .deps/howto_square_ff.Tpo -c howto_square_ff.cc  -fPIC -DPIC -o .libs/howto_square_ff.o
+if /bin/bash ../../libtool --mode=compile g++ -DHAVE_CONFIG_H -I. -I. -I../..  -pthread -DOMNITHREAD_POSIX=1 -I/usr/local/include/boost-1_36 -I/usr/local/include/gnuradio -I/usr/local/include    -I/usr/include/python2.5    -g -O2 -Wall -Woverloaded-virtual -pthread -MT howto_square2_ff.lo -MD -MP -MF ".deps/howto_square2_ff.Tpo" \
+          -c -o howto_square2_ff.lo `test -f 'howto_square2_ff.cc' || echo './'`howto_square2_ff.cc; \
+        then mv -f ".deps/howto_square2_ff.Tpo" ".deps/howto_square2_ff.Plo"; \
+        else rm -f ".deps/howto_square2_ff.Tpo"; exit 1; \
+        fi
+libtool: compile:  g++ -DHAVE_CONFIG_H -I. -I. -I../.. -pthread -DOMNITHREAD_POSIX=1 -I/usr/local/include/boost-1_36 -I/usr/local/include/gnuradio -I/usr/local/include -I/usr/include/python2.5 -g -O2 -Wall -Woverloaded-virtual -pthread -MT howto_square2_ff.lo -MD -MP -MF .deps/howto_square2_ff.Tpo -c howto_square2_ff.cc  -fPIC -DPIC -o .libs/howto_square2_ff.o
+/bin/bash ../../libtool --mode=link g++  -g -O2 -Wall -Woverloaded-virtual -pthread   -o _howto.la -rpath /home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/../test.howto//lib/python2.5/site-packages/gnuradio  -module -avoid-version howto.lo howto_square_ff.lo howto_square2_ff.lo  -lstdc++                     -L/usr/local/lib -lgnuradio-core -lboost_thread-gcc42-mt-1_36 -lrt -lboost_date_time-gcc42-mt-1_36 -lgruel -lfftw3f -lgsl -lgslcblas -lm -lgromnithread
+libtool: link: g++ -shared -nostdlib /usr/lib/gcc/x86_64-linux-gnu/4.2.4/../../../../lib/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.2.4/crtbeginS.o  .libs/howto.o .libs/howto_square_ff.o .libs/howto_square2_ff.o   -L/usr/local/lib /usr/local/lib/libgnuradio-core.so -lboost_date_time-gcc42-mt-1_36 /usr/local/lib/libgruel.so -lboost_thread-gcc42-mt-1_36 /usr/lib/libfftw3f.so -lgsl -lgslcblas /usr/local/lib/libgromnithread.so -lrt -L/usr/lib/gcc/x86_64-linux-gnu/4.2.4 -L/usr/lib/gcc/x86_64-linux-gnu/4.2.4/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.2.4/../../.. -lstdc++ -lm -lc -lgcc_s /usr/lib/gcc/x86_64-linux-gnu/4.2.4/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/4.2.4/../../../../lib/crtn.o  -pthread   -pthread -Wl,-soname -Wl,_howto.so -o .libs/_howto.so
+libtool: link: ( cd ".libs" && rm -f "_howto.la" && ln -s "../_howto.la" "_howto.la" )
+make[4]: Leaving directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src/lib'
+make[3]: Leaving directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src/lib'
+Making all in python
+make[3]: Entering directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src/python'
+make[3]: Nothing to be done for `all'.
+make[3]: Leaving directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src/python'
+make[3]: Entering directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src'
+make[2]: Leaving directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3/src'
+make[2]: Entering directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3'
+make[1]: Leaving directory `/home/jettero/code/python/gnu-radio/gr-howto-write-a-block-3.1.3'

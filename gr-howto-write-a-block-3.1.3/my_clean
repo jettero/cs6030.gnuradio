@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+git clean -dfx
+rm -rf ../test.howto
