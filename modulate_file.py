@@ -24,19 +24,8 @@ class my_top_block(gr.top_block):
         self.connect( (self.c_to_iq, 1), (self.dst, 1))
 
         # settings for the modulator: /usr/local/lib/python2.5/site-packages/gnuradio/blks2impl/gmsk.py
-        # settings for the modulator: /usr/local/lib/python2.5/site-packages/gnuradio/blks2impl/qam16.py
 
-        if options.modulator == 'gmsk':
-            if verbose: print "modulating with GMSK"
-            self.modulator = blks2.gmsk_mod(samples_per_symbol=options.samples_per_symbol)
-
-     #  elif options.modulator == 'qam16':
-     #      if verbose: print "modulating with QAM16"
-     #      self.modulator = blks2.qam16_mod()
-
-        else:
-            raise SystemExit, "ERROR: modulation option '%s' invalid" % options.modulator
-
+        self.modulator = blks2.gmsk_mod(samples_per_symbol=options.samples_per_symbol)
         self.pkt_queue = blks2.mod_pkts( modulator=self.modulator )
 
         if options.carrier_frequency == 0:
@@ -44,9 +33,8 @@ class my_top_block(gr.top_block):
         else:
             self.mixer   = gr.multiply_vcc(1)
             self.carrier = gr.sig_source_c( options.carrier_sample_rate, gr.GR_SIN_WAVE, options.carrier_frequency, 1.0 )
-          # self.lowpass = gr.fir_filter_ccf(1, firdes.low_pass(1, 48000, 17500, 500, firdes.WIN_HAMMING, 6.76))
-          # self.connect(self.pkt_queue, self.lowpass, (self.mixer, 0) )
-            self.connect(self.pkt_queue, (self.mixer, 0) )
+            self.lowpass = gr.fir_filter_ccf(1, firdes.low_pass(1, 48000, 48000/(2*options.samples_per_symbol), 500, firdes.WIN_HAMMING, 6.76))
+            self.connect(self.pkt_queue, self.lowpass, (self.mixer, 0) )
             self.connect(self.carrier,   (self.mixer, 1) )
 
         self.amp = gr.multiply_const_cc(1); self.amp.set_k(options.amp_amplitude)
@@ -147,8 +135,6 @@ if __name__ == '__main__':
 
     parser.add_option("", "--debug-wavs", action="store_true", default=False, help="dump received passband and baseband signals to wav files [default: False]")
     parser.add_option("", "--debug-files", action="store_true", default=False, help="dump received passband and baseband signals to binary files [default: False]")
-
-    parser.add_option("-m", "--modulator", type="string", default='gmsk', help="modulator choices are currently limited to 'gmsk' or 'qam16' [default: %default]") 
 
     (options, args) = parser.parse_args()
 

@@ -32,18 +32,8 @@ class my_top_block(gr.top_block):
             self.connect( (self.src, 0), (self.iq_to_c, 0) )
             self.connect( (self.src, 1), (self.iq_to_c, 1) )
 
-        if options.modulator == 'gmsk':
-            if verbose: print "demodulating with GMSK"
-            self.demodulator = blks2.gmsk_demod(samples_per_symbol=options.samples_per_symbol)
-
-      # elif options.modulator == 'qam16':
-      #     if verbose: print "demodulating with QAM16"
-      #     self.demodulator = blks2.qam16_demod()
-
-        else:
-            raise SystemExit, "ERROR: modulation option '%s' invalid" % options.modulator
-
-        self.pkt_queue = blks2.demod_pkts( demodulator=self.demodulator, callback=callback, threshold=options.threshold )
+        self.demodulator = blks2.gmsk_demod(samples_per_symbol=options.samples_per_symbol)
+        self.pkt_queue   = blks2.demod_pkts( demodulator=self.demodulator, callback=callback, threshold=options.threshold )
 
         if options.carrier_frequency == 0:
             self.mixer = self.iq_to_c
@@ -164,7 +154,6 @@ if __name__ == '__main__':
     parser.add_option("", "--debug-wavs", action="store_true", default=False, help="dump received passband and converted baseband signals to wav files [default: False]")
     parser.add_option("", "--debug-files", action="store_true", default=False, help="dump received passband and baseband signals to binary files [default: False]")
 
-    parser.add_option("-m", "--modulator", type="string", default='gmsk', help="modulator choices are currently limited to 'gmsk' or 'qam16' [default: %default]") 
     parser.add_option("-e", "--exit-on-receive", action="store_true", default=False, help="exit after receiving a file? [default: %default]")
 
     (options, args) = parser.parse_args()
