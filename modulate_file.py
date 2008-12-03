@@ -33,7 +33,7 @@ class my_top_block(gr.top_block):
         else:
             self.mixer   = gr.multiply_vcc(1)
             self.carrier = gr.sig_source_c( options.carrier_sample_rate, gr.GR_SIN_WAVE, options.carrier_frequency, 1.0 )
-            self.lowpass = gr.fir_filter_ccf(1, firdes.low_pass(1, 48000, 48000/(2*options.samples_per_symbol), 500, firdes.WIN_HAMMING, 6.76))
+            self.lowpass = gr.fir_filter_ccf(1, firdes.low_pass(1, 48000, 48000/(2*options.samples_per_symbol)+500, 500, firdes.WIN_HAMMING, 6.76))
             self.connect(self.pkt_queue, self.lowpass, (self.mixer, 0) )
             self.connect(self.carrier,   (self.mixer, 1) )
 
